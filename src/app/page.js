@@ -1,7 +1,28 @@
-import React from 'react'
+import React from 'react';
 
-export default function page() {
+const API_KEY = process.env.API_KEY;
+
+export default async function Home({ searchParams }) {
+  const genre = searchParams?.genre || 'fetchTrending';
+
+  const res = await fetch(
+    `https://api.themoviedb.org/3${
+      genre === 'fetchTopRated' ? '/movie/top_rated' : '/trending/all/week'
+    }?api_key=${API_KEY}&language=en-US&page=1`,
+    { cache: 'no-store' } 
+  );
+
+  const data = await res.json();
+  if (!res.ok) {
+    throw new Error('Failed to fetch data');
+  }
+  const results = data.results;
+  console.log(results);
+
   return (
-    <div>page</div>
-  )
+    <div>
+      <h1 className="text-xl font-bold mb-4">Home - {genre === 'fetchTopRated' ? 'Top Rated' : 'Trending'}</h1>
+      <pre>{JSON.stringify(data, null, 2)}</pre>
+    </div>
+  );
 }
