@@ -8,7 +8,7 @@ export default function MenuItem({ title, address, Icon }) {
       className="
         flex items-center gap-1
         px-3 py-2
-        text-gray-700 dark:text-gray-300
+        text-shadow-violet-900 dark:text-shadow-violet-400
         hover:text-purple-600
         transition-colors duration-300
         rounded-md
