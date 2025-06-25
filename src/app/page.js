@@ -1,4 +1,5 @@
 import React from 'react';
+import Results from '../components/Results'; // Corrected path
 
 const API_KEY = process.env.API_KEY;
 
@@ -9,20 +10,20 @@ export default async function Home({ searchParams }) {
     `https://api.themoviedb.org/3${
       genre === 'fetchTopRated' ? '/movie/top_rated' : '/trending/all/week'
     }?api_key=${API_KEY}&language=en-US&page=1`,
-    { cache: 'no-store' } 
+    { cache: 'no-store' }
   );
 
+  if (!res.ok) throw new Error('Failed to fetch data');
+
   const data = await res.json();
-  if (!res.ok) {
-    throw new Error('Failed to fetch data');
-  }
   const results = data.results;
-  console.log(results);
 
   return (
-    <div>
-      <h1 className="text-xl font-bold mb-4">Home - {genre === 'fetchTopRated' ? 'Top Rated' : 'Trending'}</h1>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
-    </div>
+    <main className="p-4">
+      <h1 className="text-2xl font-bold mb-6">
+        Home - {genre === 'fetchTopRated' ? 'Top Rated' : 'Trending'}
+      </h1>
+      <Results results={results} />
+    </main>
   );
 }
